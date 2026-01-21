@@ -3,7 +3,9 @@ package com.demo.foodorder.dto.request;
 
 import com.demo.foodorder.enums.CuisineType;
 import com.demo.foodorder.enums.FoodCategory;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

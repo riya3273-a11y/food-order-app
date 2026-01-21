@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,16 +28,14 @@ import java.util.stream.Collectors;
 public class FoodSuggestionServiceImpl implements FoodSuggestionService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodSuggestionServiceImpl.class);
-    private final OrderRepository orderRepository;
-    private final MenuItemRepository menuItemRepository;
-
     private static final double WEIGHT_CUISINE = 0.50;
     private static final double WEIGHT_CATEGORY = 0.30;
     private static final double WEIGHT_POPULARITY = 0.15;
     private static final double WEIGHT_RECENCY = 0.05;
-
     private static final int RECENCY_DAYS = 15;
     private static final long REPEAT_SUGGESTION_POPULARITY_THRESHOLD = 3L;
+    private final OrderRepository orderRepository;
+    private final MenuItemRepository menuItemRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -219,5 +220,6 @@ public class FoodSuggestionServiceImpl implements FoodSuggestionService {
                 .collect(Collectors.toList());
     }
 
-    private record ScoredItem(MenuItem item, double score) {}
+    private record ScoredItem(MenuItem item, double score) {
+    }
 }

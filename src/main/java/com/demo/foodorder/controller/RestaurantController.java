@@ -1,8 +1,8 @@
 package com.demo.foodorder.controller;
 
 import com.demo.foodorder.dto.response.MenuItemResponse;
-import com.demo.foodorder.dto.response.TimingResponse;
 import com.demo.foodorder.dto.response.RestaurantResponse;
+import com.demo.foodorder.dto.response.TimingResponse;
 import com.demo.foodorder.security.UserPrincipal;
 import com.demo.foodorder.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,7 +50,7 @@ public class RestaurantController {
         logger.info("Browsing nearby restaurants: lat={}, lng={}, radius={}km", lat, lng, radiusKm);
         return ResponseEntity.ok(
                 restaurantService.browseRestaurants(
-                        lat, lng, radiusKm,  Boolean.TRUE.equals(openNow)
+                        lat, lng, radiusKm, Boolean.TRUE.equals(openNow)
                 )
         );
     }
@@ -58,7 +58,7 @@ public class RestaurantController {
     @Operation(summary = "Get restaurant details",
             description = "View details of specific restaurant")
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<RestaurantResponse> getRestaurantById( @PathVariable Long restaurantId) {
+    public ResponseEntity<RestaurantResponse> getRestaurantById(@PathVariable Long restaurantId) {
         logger.info("Viewing details of a specific restaurant");
         return ResponseEntity.ok(
                 restaurantService.getRestaurantById(restaurantId)

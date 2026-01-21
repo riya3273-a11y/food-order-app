@@ -1,8 +1,8 @@
 package com.demo.foodorder.controller;
 
 import com.demo.foodorder.dto.request.CreateRestaurantRequest;
-import com.demo.foodorder.dto.response.RestaurantResponse;
 import com.demo.foodorder.dto.request.UpdateRestaurantRequest;
+import com.demo.foodorder.dto.response.RestaurantResponse;
 import com.demo.foodorder.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

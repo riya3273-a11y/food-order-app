@@ -1,12 +1,10 @@
 package com.demo.foodorder.exception.handler;
 
 import com.demo.foodorder.dto.response.ErrorResponse;
-import com.demo.foodorder.exception.BadRequestException;
-import com.demo.foodorder.exception.DatabaseOperationException;
-import com.demo.foodorder.exception.ResourceNotFoundException;
-import com.demo.foodorder.exception.ServiceException;
-import com.demo.foodorder.exception.UnauthorizedException;
+import com.demo.foodorder.exception.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,18 +1,16 @@
 package com.demo.foodorder.service.impl;
 
+import com.demo.foodorder.dto.request.CreateRestaurantRequest;
 import com.demo.foodorder.dto.request.UpdateRestaurantRequest;
+import com.demo.foodorder.dto.response.RestaurantResponse;
+import com.demo.foodorder.entity.Restaurant;
+import com.demo.foodorder.entity.User;
 import com.demo.foodorder.enums.Role;
 import com.demo.foodorder.exception.BadRequestException;
 import com.demo.foodorder.exception.DatabaseOperationException;
 import com.demo.foodorder.exception.ResourceNotFoundException;
 import com.demo.foodorder.exception.ServiceException;
 import com.demo.foodorder.mapper.RestaurantMapper;
-
-
-import com.demo.foodorder.dto.request.CreateRestaurantRequest;
-import com.demo.foodorder.dto.response.RestaurantResponse;
-import com.demo.foodorder.entity.Restaurant;
-import com.demo.foodorder.entity.User;
 import com.demo.foodorder.repository.RestaurantRepository;
 import com.demo.foodorder.repository.UserRepository;
 import com.demo.foodorder.service.AdminService;

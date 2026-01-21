@@ -1,15 +1,15 @@
 package com.demo.foodorder.service;
 
 import com.demo.foodorder.dto.response.MenuItemResponse;
-import com.demo.foodorder.dto.response.TimingResponse;
 import com.demo.foodorder.dto.response.RestaurantResponse;
+import com.demo.foodorder.dto.response.TimingResponse;
 
 import java.util.List;
 
 public interface RestaurantService {
-    
+
     List<RestaurantResponse> browseAllRestaurants(boolean openNowOnly);
-    
+
     List<RestaurantResponse> browseRestaurants(
             double userLat,
             double userLng,

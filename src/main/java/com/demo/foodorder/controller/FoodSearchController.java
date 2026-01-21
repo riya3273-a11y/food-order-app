@@ -39,9 +39,9 @@ public class FoodSearchController {
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) Boolean openNow,
-            @Parameter(description = "Page number (0-indexed)", example = "0") 
+            @Parameter(description = "Page number (0-indexed)", example = "0")
             @RequestParam(defaultValue = "0") int page,
-            @Parameter(description = "Page size (max 100)", example = "10") 
+            @Parameter(description = "Page size (max 100)", example = "10")
             @RequestParam(defaultValue = "10") int size) {
         logger.info("Searching foods with query: {}, page: {}, size: {}", q, page, size);
         return ResponseEntity.ok(

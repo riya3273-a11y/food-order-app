@@ -12,18 +12,18 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT DISTINCT o FROM Order o " +
-           "LEFT JOIN FETCH o.items oi " +
-           "LEFT JOIN FETCH oi.menuItem " +
-           "WHERE o.consumer.id = :consumerId " +
-           "AND o.consumer.active = true " +
-           "AND o.restaurant.active = true")
+            "LEFT JOIN FETCH o.items oi " +
+            "LEFT JOIN FETCH oi.menuItem " +
+            "WHERE o.consumer.id = :consumerId " +
+            "AND o.consumer.active = true " +
+            "AND o.restaurant.active = true")
     List<Order> findByConsumerIdAndActive(@Param("consumerId") Long consumerId);
 
     List<Order> findByConsumerId(Long consumerId);
 
     @Query("SELECT o FROM Order o " +
-           "WHERE o.restaurant.id = :restaurantId " +
-           "AND o.restaurant.active = true")
+            "WHERE o.restaurant.id = :restaurantId " +
+            "AND o.restaurant.active = true")
     List<Order> findByRestaurantIdAndRestaurantActiveTrue(@Param("restaurantId") Long restaurantId);
 
     List<Order> findByRestaurantIdAndStatus(
@@ -32,9 +32,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     );
 
     @Query("SELECT o FROM Order o " +
-           "WHERE o.restaurant.id = :restaurantId " +
-           "AND o.status = :status " +
-           "AND o.restaurant.active = true")
+            "WHERE o.restaurant.id = :restaurantId " +
+            "AND o.status = :status " +
+            "AND o.restaurant.active = true")
     List<Order> findByRestaurantIdAndStatusAndRestaurantActiveTrue(
             @Param("restaurantId") Long restaurantId,
             @Param("status") OrderStatus status
@@ -43,9 +43,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndRestaurantId(Long orderId, Long restaurantId);
 
     @Query("SELECT o FROM Order o " +
-           "WHERE o.id = :orderId " +
-           "AND o.restaurant.id = :restaurantId " +
-           "AND o.restaurant.active = true")
+            "WHERE o.id = :orderId " +
+            "AND o.restaurant.id = :restaurantId " +
+            "AND o.restaurant.active = true")
     Optional<Order> findByIdAndRestaurantIdAndRestaurantActiveTrue(
             @Param("orderId") Long orderId,
             @Param("restaurantId") Long restaurantId
@@ -54,10 +54,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndConsumerId(Long orderId, Long consumerId);
 
     @Query("SELECT o FROM Order o " +
-           "WHERE o.id = :orderId " +
-           "AND o.consumer.id = :consumerId " +
-           "AND o.consumer.active = true " +
-           "AND o.restaurant.active = true")
+            "WHERE o.id = :orderId " +
+            "AND o.consumer.id = :consumerId " +
+            "AND o.consumer.active = true " +
+            "AND o.restaurant.active = true")
     Optional<Order> findByIdAndConsumerIdAndActiveTrue(
             @Param("orderId") Long orderId,
             @Param("consumerId") Long consumerId

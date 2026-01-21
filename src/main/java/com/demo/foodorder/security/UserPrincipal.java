@@ -37,10 +37,25 @@ public class UserPrincipal implements UserDetails {
         return user.getUsername();
     }
 
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return user.getActive(); }
-    @Override public boolean isEnabled() { return user.getActive(); }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return user.getActive();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return user.getActive();
+    }
 
     public Long getId() {
         return user.getId();

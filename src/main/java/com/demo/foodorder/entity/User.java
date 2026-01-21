@@ -2,13 +2,8 @@ package com.demo.foodorder.entity;
 
 import com.demo.foodorder.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Builder;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 
 import java.time.LocalDateTime;
 

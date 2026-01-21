@@ -1,4 +1,5 @@
 package com.demo.foodorder.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 

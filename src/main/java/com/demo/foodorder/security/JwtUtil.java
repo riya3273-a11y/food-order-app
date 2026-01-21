@@ -22,6 +22,12 @@ public class JwtUtil {
     @Value("${app.jwt.expiration-ms}")
     private long jwtExpiration;
 
+    public static void buildErrorResponse(HttpServletResponse response, String message) throws IOException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.getWriter().write(message);
+    }
+
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -42,7 +48,6 @@ public class JwtUtil {
             throw new RuntimeException("Error while generating JWT token ", e);
         }
     }
-
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
@@ -70,11 +75,5 @@ public class JwtUtil {
         } catch (IllegalArgumentException ex) {
             throw new RuntimeException("JWT claims string is empty");
         }
-    }
-
-    public static void buildErrorResponse(HttpServletResponse response, String message) throws IOException {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getWriter().write(message);
     }
 }

@@ -1,9 +1,9 @@
 package com.demo.foodorder.service.impl;
 
-import com.demo.foodorder.dto.response.LoginResponse;
-import com.demo.foodorder.dto.response.RegisterResponse;
 import com.demo.foodorder.dto.request.LoginRequest;
 import com.demo.foodorder.dto.request.RegisterRequest;
+import com.demo.foodorder.dto.response.LoginResponse;
+import com.demo.foodorder.dto.response.RegisterResponse;
 import com.demo.foodorder.entity.User;
 import com.demo.foodorder.enums.Role;
 import com.demo.foodorder.exception.BadRequestException;
@@ -18,7 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,14 +61,14 @@ public class AuthServiceImpl implements AuthService {
 
             User savedUser = userRepository.save(user);
             String successMessage = "Registration successful";
-            
+
             return RegisterResponse.builder()
                     .username(savedUser.getUsername())
                     .email(savedUser.getEmail())
                     .role(savedUser.getRole().toString())
-                    .message(role == Role.CONSUMER 
-                        ? successMessage 
-                        : successMessage + " - Contact Admin to create restaurant account. Only then can login")
+                    .message(role == Role.CONSUMER
+                            ? successMessage
+                            : successMessage + " - Contact Admin to create restaurant account. Only then can login")
                     .build();
         } catch (BadRequestException e) {
             logger.error("Registration failed: {}", e.getMessage());
@@ -90,13 +91,13 @@ public class AuthServiceImpl implements AuthService {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             User user = getCurrentUser();
-            
+
             if (!user.getActive()) {
                 throw new BadRequestException("Account not active.");
             }
-            
+
             String token = jwtUtil.generateToken(request.getUsername());
-            
+
             return LoginResponse.builder()
                     .tokenType("Bearer")
                     .token(token)

@@ -25,6 +25,7 @@ public class ErrorResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
     public static <T> ErrorResponse<T> error(String message, T error) {
         return ErrorResponse.<T>builder()
                 .message(message)

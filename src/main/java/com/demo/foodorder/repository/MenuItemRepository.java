@@ -20,30 +20,30 @@ public interface MenuItemRepository
         JpaSpecificationExecutor<MenuItem> {
 
     @Query("""
-        SELECT m FROM MenuItem m
-        JOIN m.restaurant r
-        WHERE m.restaurant.id = :restaurantId
-          AND r.active = true
-          AND m.available = true
-    """)
+                SELECT m FROM MenuItem m
+                JOIN m.restaurant r
+                WHERE m.restaurant.id = :restaurantId
+                  AND r.active = true
+                  AND m.available = true
+            """)
     List<MenuItem> findByRestaurantIdAndAvailableTrue(@Param("restaurantId") Long restaurantId);
 
     @Query("""
-        SELECT m FROM MenuItem m
-        JOIN m.restaurant r
-        WHERE r.active = true
-          AND m.available = true
-    """)
+                SELECT m FROM MenuItem m
+                JOIN m.restaurant r
+                WHERE r.active = true
+                  AND m.available = true
+            """)
     List<MenuItem> findByAvailableTrueAndRestaurantActiveTrue();
 
     @Query("""
-        SELECT m.id, COUNT(oi.id) 
-        FROM MenuItem m
-        LEFT JOIN OrderItem oi ON oi.menuItem.id = m.id
-        WHERE m.restaurant.active = true
-          AND m.available = true
-        GROUP BY m.id
-    """)
+                SELECT m.id, COUNT(oi.id) 
+                FROM MenuItem m
+                LEFT JOIN OrderItem oi ON oi.menuItem.id = m.id
+                WHERE m.restaurant.active = true
+                  AND m.available = true
+                GROUP BY m.id
+            """)
     List<Object[]> findMenuItemsWithOrderCount();
 
     void deleteByRestaurantId(Long restaurantId);
@@ -51,13 +51,13 @@ public interface MenuItemRepository
     Optional<MenuItem> findByIdAndRestaurantId(Long id, Long restaurantId);
 
     @Query("""
-        SELECT m FROM MenuItem m
-        JOIN m.restaurant r
-        WHERE m.id = :itemId
-          AND m.restaurant.id = :restaurantId
-          AND m.available = true
-          AND r.active = true
-    """)
+                SELECT m FROM MenuItem m
+                JOIN m.restaurant r
+                WHERE m.id = :itemId
+                  AND m.restaurant.id = :restaurantId
+                  AND m.available = true
+                  AND r.active = true
+            """)
     Optional<MenuItem> findByIdAndRestaurantIdAndAvailableTrue(
             @Param("itemId") Long itemId,
             @Param("restaurantId") Long restaurantId
@@ -71,19 +71,19 @@ public interface MenuItemRepository
     );
 
     @Query("""
-        SELECT m FROM MenuItem m
-        JOIN m.restaurant r
-        WHERE r.active = true
-          AND m.available = true
-          AND (:q IS NULL OR LOWER(m.name) LIKE LOWER(CONCAT('%', :q, '%')))
-          AND (:category IS NULL OR m.foodCategory = :category)
-          AND (:cuisine IS NULL OR m.cuisineType = :cuisine)
-          AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
-          AND (:vegan IS NULL OR m.vegan = :vegan)
-          AND (:glutenFree IS NULL OR m.glutenFree = :glutenFree)
-          AND (:minPrice IS NULL OR m.price >= :minPrice)
-          AND (:maxPrice IS NULL OR m.price <= :maxPrice)
-    """)
+                SELECT m FROM MenuItem m
+                JOIN m.restaurant r
+                WHERE r.active = true
+                  AND m.available = true
+                  AND (:q IS NULL OR LOWER(m.name) LIKE LOWER(CONCAT('%', :q, '%')))
+                  AND (:category IS NULL OR m.foodCategory = :category)
+                  AND (:cuisine IS NULL OR m.cuisineType = :cuisine)
+                  AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
+                  AND (:vegan IS NULL OR m.vegan = :vegan)
+                  AND (:glutenFree IS NULL OR m.glutenFree = :glutenFree)
+                  AND (:minPrice IS NULL OR m.price >= :minPrice)
+                  AND (:maxPrice IS NULL OR m.price <= :maxPrice)
+            """)
     Page<MenuItem> searchFoods(
             @Param("q") String q,
             @Param("category") FoodCategory category,
@@ -97,21 +97,21 @@ public interface MenuItemRepository
     );
 
     @Query("""
-        SELECT m FROM MenuItem m
-        JOIN m.restaurant r
-        LEFT JOIN RestaurantTiming rt ON rt.restaurant.id = r.id AND rt.dayOfWeek = :dayOfWeek
-        WHERE r.active = true
-          AND m.available = true
-          AND (:q IS NULL OR LOWER(m.name) LIKE LOWER(CONCAT('%', :q, '%')))
-          AND (:category IS NULL OR m.foodCategory = :category)
-          AND (:cuisine IS NULL OR m.cuisineType = :cuisine)
-          AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
-          AND (:vegan IS NULL OR m.vegan = :vegan)
-          AND (:glutenFree IS NULL OR m.glutenFree = :glutenFree)
-          AND (:minPrice IS NULL OR m.price >= :minPrice)
-          AND (:maxPrice IS NULL OR m.price <= :maxPrice)
-          AND (rt IS NOT NULL AND :currentTime >= rt.openTime AND :currentTime <= rt.closeTime)
-    """)
+                SELECT m FROM MenuItem m
+                JOIN m.restaurant r
+                LEFT JOIN RestaurantTiming rt ON rt.restaurant.id = r.id AND rt.dayOfWeek = :dayOfWeek
+                WHERE r.active = true
+                  AND m.available = true
+                  AND (:q IS NULL OR LOWER(m.name) LIKE LOWER(CONCAT('%', :q, '%')))
+                  AND (:category IS NULL OR m.foodCategory = :category)
+                  AND (:cuisine IS NULL OR m.cuisineType = :cuisine)
+                  AND (:vegetarian IS NULL OR m.vegetarian = :vegetarian)
+                  AND (:vegan IS NULL OR m.vegan = :vegan)
+                  AND (:glutenFree IS NULL OR m.glutenFree = :glutenFree)
+                  AND (:minPrice IS NULL OR m.price >= :minPrice)
+                  AND (:maxPrice IS NULL OR m.price <= :maxPrice)
+                  AND (rt IS NOT NULL AND :currentTime >= rt.openTime AND :currentTime <= rt.closeTime)
+            """)
     Page<MenuItem> searchFoodsWithOpenNow(
             @Param("q") String q,
             @Param("category") FoodCategory category,

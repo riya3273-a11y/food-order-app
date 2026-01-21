@@ -9,6 +9,7 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestaurantResponse {
 
+    TimingResponse timingResponse;
     private Long id;
     private String name;
     private String address;
@@ -18,6 +19,5 @@ public class RestaurantResponse {
     private Boolean active;
     private String ownerEmail;
     private Boolean openNow;
-    TimingResponse timingResponse;
 
 }

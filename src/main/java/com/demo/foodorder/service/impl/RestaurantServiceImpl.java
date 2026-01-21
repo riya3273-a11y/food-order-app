@@ -1,8 +1,9 @@
 package com.demo.foodorder.service.impl;
 
 import com.demo.foodorder.dto.response.MenuItemResponse;
-import com.demo.foodorder.dto.response.TimingResponse;
 import com.demo.foodorder.dto.response.RestaurantResponse;
+import com.demo.foodorder.dto.response.TimingResponse;
+import com.demo.foodorder.entity.Restaurant;
 import com.demo.foodorder.entity.RestaurantTiming;
 import com.demo.foodorder.exception.ResourceNotFoundException;
 import com.demo.foodorder.mapper.MenuItemMapper;
@@ -11,7 +12,6 @@ import com.demo.foodorder.mapper.RestaurantTimingMapper;
 import com.demo.foodorder.repository.MenuItemRepository;
 import com.demo.foodorder.repository.RestaurantRepository;
 import com.demo.foodorder.repository.RestaurantTimingRepository;
-import  com.demo.foodorder.entity.Restaurant;
 import com.demo.foodorder.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -31,7 +31,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     private static final Logger logger = LoggerFactory.getLogger(RestaurantServiceImpl.class);
     private final RestaurantRepository restaurantRepository;
     private final RestaurantTimingRepository timingRepository;
-    private  final MenuItemRepository menuItemRepository;
+    private final MenuItemRepository menuItemRepository;
+
+    private static boolean isOpenNow(LocalTime now, RestaurantTiming timing) {
+        return timing != null
+                && !now.isBefore(timing.getOpenTime())
+                && !now.isAfter(timing.getCloseTime());
+    }
 
     @Override
     public List<RestaurantResponse> browseAllRestaurants(boolean openNowOnly) {
@@ -71,7 +77,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         var restaurantTiming = timingRepository
                 .findByRestaurantIdAndDayOfWeek(restaurant.getId(), today)
                 .orElse(null);
-        if (restaurantTiming == null) return  RestaurantMapper.toResponse(restaurant);
+        if (restaurantTiming == null) return RestaurantMapper.toResponse(restaurant);
         boolean openNow = isOpenNow(now, restaurantTiming);
         return RestaurantMapper.toResponse(restaurant, restaurantTiming, openNow);
     }
@@ -102,12 +108,6 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .orElse(null);
         boolean openNow = isOpenNow(now, restaurantTiming);
         return RestaurantMapper.toResponse(restaurant, restaurantTiming, openNow);
-    }
-
-    private static boolean isOpenNow(LocalTime now, RestaurantTiming timing) {
-        return timing != null
-                && !now.isBefore(timing.getOpenTime())
-                && !now.isAfter(timing.getCloseTime());
     }
 
     /**

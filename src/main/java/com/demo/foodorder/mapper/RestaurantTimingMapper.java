@@ -6,7 +6,7 @@ import com.demo.foodorder.entity.RestaurantTiming;
 public class RestaurantTimingMapper {
 
     public static TimingResponse toResponse(RestaurantTiming timing) {
-        if(timing == null) return null;
+        if (timing == null) return null;
         return TimingResponse.builder()
                 .dayOfWeek(timing.getDayOfWeek())
                 .openTime(timing.getOpenTime())
