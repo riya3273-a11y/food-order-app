@@ -1,15 +1,13 @@
 package com.demo.foodorder.service;
 
-import com.demo.foodorder.dto.search.FoodSearchResponse;
+import com.demo.foodorder.dto.response.PagedFoodSearchResponse;
 import com.demo.foodorder.enums.CuisineType;
 import com.demo.foodorder.enums.FoodCategory;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface FoodSearchService {
-    List<FoodSearchResponse> searchFoods(
+    PagedFoodSearchResponse searchFoods(
             String q,
             FoodCategory category,
             CuisineType cuisine,
@@ -18,5 +16,7 @@ public interface FoodSearchService {
             Boolean glutenFree,
             BigDecimal minPrice,
             BigDecimal maxPrice,
-            Boolean openNow);
+            Boolean openNow,
+            int pageNumber,
+            int pageSize);
 }

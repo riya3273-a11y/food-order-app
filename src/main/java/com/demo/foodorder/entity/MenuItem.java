@@ -64,6 +64,4 @@ public class MenuItem {
     @Column(nullable = false)
     private Boolean glutenFree = false;
 
-    // optional popularity counter (updated on order or aggregated)
-    private Long popularity = 0L;
 }

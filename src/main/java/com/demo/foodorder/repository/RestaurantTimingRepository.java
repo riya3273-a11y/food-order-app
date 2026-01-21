@@ -2,6 +2,7 @@ package com.demo.foodorder.repository;
 
 import com.demo.foodorder.entity.RestaurantTiming;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -16,5 +17,6 @@ public interface RestaurantTimingRepository extends JpaRepository<RestaurantTimi
             DayOfWeek dayOfWeek
     );
 
+    @Modifying
     void deleteByRestaurantId(Long restaurantId);
 }

@@ -34,16 +34,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/swagger-ui*",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/v3/api-docs",
                                 "/swagger-resources/**",
                                 "/configuration/**",
-                                "/webjars/**",
                                 "/h2-console/**",
-                                "/favicon.ico",
+                                "/api/search/**",
+                                "/api/restaurants/**",
                                 "/error"
                         ).permitAll()
                         .requestMatchers("/api/admin/**")
@@ -52,8 +50,6 @@ public class SecurityConfig {
                         .hasRole("RESTAURANT_OWNER")
                         .requestMatchers(
                                 "/api/orders/**",
-                                "/api/search/**",
-                                "/api/restaurants/**",
                                 "/api/suggestions/**"
                         ).hasRole("CONSUMER")
                         .anyRequest().authenticated()

@@ -1,33 +1,36 @@
 package com.demo.foodorder.controller;
 
-import com.demo.foodorder.dto.ApiResponse;
-import com.demo.foodorder.dto.auth.LoginResponse;
-import com.demo.foodorder.dto.auth.RegisterResponse;
-import com.demo.foodorder.dto.auth.LoginRequest;
-import com.demo.foodorder.dto.auth.RegisterRequest;
+import com.demo.foodorder.dto.response.LoginResponse;
+import com.demo.foodorder.dto.response.RegisterResponse;
+import com.demo.foodorder.dto.request.LoginRequest;
+import com.demo.foodorder.dto.request.RegisterRequest;
 import com.demo.foodorder.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "1. Authentication", description = "Apis tp register/login account")
+@Tag(name = "1. Authentication", description = "Apis to register/login account")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
     @Operation(
             summary = "Register new user",
-            description = "Register as CONSUMER (auto-activated) or RESTAURANT_OWNER (requires admin approval once registered). No authentication required."
+            description = "Register as role: CONSUMER (auto-activated) or RESTAURANT_OWNER (activated during restaurant creation). "
     )
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(
             @Valid @RequestBody RegisterRequest request) {
+        logger.info("Registering new user: {}", request.getUsername());
         RegisterResponse response = authService.register(request);
         return ResponseEntity.ok(response);
     }
@@ -39,14 +42,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request) {
+        logger.info("Login attempt for user: {}", request.getUsername());
         LoginResponse response = authService.login(request);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-        // Since we use JWT stateless, logout is handled client-side by removing the token
-        // This endpoint exists for formal API completeness
-        return ResponseEntity.ok("Logout successful. Please remove the token from client.");
-    }
 }

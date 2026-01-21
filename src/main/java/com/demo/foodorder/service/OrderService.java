@@ -1,7 +1,7 @@
 package com.demo.foodorder.service;
 
-import com.demo.foodorder.dto.order.OrderResponse;
-import com.demo.foodorder.dto.order.PlaceOrderRequest;
+import com.demo.foodorder.dto.response.OrderResponse;
+import com.demo.foodorder.dto.request.PlaceOrderRequest;
 import com.demo.foodorder.entity.User;
 
 import java.util.List;

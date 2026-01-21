@@ -14,97 +14,77 @@ A comprehensive food ordering application built with Spring Boot, featuring JWT 
 - **Validation**: Jakarta Bean Validation
 
 ## Features
-- User Authentication & Authorization (JWT)  
--  Role-based Access Control (ADMIN, RESTAURANT_OWNER, CONSUMER)  
--  Restaurant Management  
--  Menu Item CRUD Operations  
--  Order Management & Status Tracking  
--  Restaurant Browsing 
--  Advanced Food Search  
--  Personalized Food Suggestions  
--  Restaurant Timing Management  
+- JWT-based authentication and authorization
+- Role-based access control (ADMIN, RESTAURANT_OWNER, CONSUMER)
+- Restaurant account management (Admin)
+- Menu item management (Restaurant Owner)
+- Restaurant timing management (Restaurant Owner)
+- Order placement and tracking (Consumer)
+- Order approval and status updates (Restaurant Owner)
+- Restaurant browsing by location or all restaurants 
+- Food search with multiple filters 
+- Personalized food suggestions based on order history (Consumer)  
 
-### Locally Run
+### Locally To Run
 
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd food-order-app
-```
-
-2. **Build the project**
-```bash
+1. **Build the project**
+bash
 mvnw clean install
-```
 
 3. **Run the application**
-```bash
+bash
 mvnw spring-boot:run
-```
 
-The application will start on `http://localhost:8080`
+
+The application will start on http://localhost:8080
 
 ### Access Points
 - **API Base URL**: http://localhost:8080/api
 - **Swagger UI**: http://localhost:8080/swagger-ui.html
 - **API Docs**: http://localhost:8080/v3/api-docs
-- **H2 Console**: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:foodorderdb`
-  - Username: `sa`
-  - Password: (leave blank)
 
-## API Documentation
+## API Endpoints
 
-### Authentication Endpoints (`/api/auth`)
+### Authentication
+Public endpoints.
 
-#### Register User
-- POST /api/auth/register - Register user
+- POST /api/auth/register - Register new user
+- POST /api/auth/login - Login and receive JWT token
 
-#### Login
-- POST /api/auth/login - Login user
+### Admin
+Requires ADMIN role.
 
-### Admin Endpoints (`/api/admin`)
-- `POST /restaurants` - Create restaurant
-- `PUT /restaurants/{id}` - Update restaurant
-- `DELETE /restaurants/{id}` - Delete restaurant
+- POST /api/admin/restaurants - Create new restaurant account
+- PUT /api/admin/restaurants/{id} - Update restaurant details
+- DELETE /api/admin/restaurants/{id} - Delete restaurant
 
-### Restaurant Owner Endpoints (`/api/restaurant/owner`)
-- `POST /{restaurantId}/menu` - Add menu item
-- `PUT /{restaurantId}/menu/{itemId}` - Update menu item
-- `DELETE /{restaurantId}/menu/{itemId}` - Delete menu item
-- `GET /{restaurantId}/menu` - List menu items
-- `PUT /{restaurantId}/timings` - Update restaurant timings
-- `GET /{restaurantId}/orders` - View restaurant orders
-- `PATCH /{restaurantId}/orders/{orderId}/status` - Update order status
+### Restaurant Owner
+Requires RESTAURANT_OWNER role.
 
-### Consumer Endpoints
-#### Orders (`/api/orders`)
-- `POST /` - Place order
-- `GET /` - Get order history
-- `GET /{orderId}` - Check order status
+- GET /api/restaurant-owners/restaurants - View all owned restaurants
+- POST /api/restaurant-owners/restaurants/{restaurantId}/menu-items - Add menu item
+- PUT /api/restaurant-owners/restaurants/{restaurantId}/menu-items/{itemId} - Update menu item
+- DELETE /api/restaurant-owners/restaurants/{restaurantId}/menu/{itemId} - Delete menu item
+- PUT /api/restaurant-owners/restaurants/{restaurantId}/timings - Update restaurant timings
+- GET /api/restaurant-owners/restaurants/{restaurantId}/orders - View orders
+- POST /api/restaurant-owners/restaurants/{restaurantId}/orders/{orderId}/approve - Approve order
+- PATCH /api/restaurant-owners/restaurants/{restaurantId}/orders/{orderId}/status - Update order status
 
-#### Search (`/api/search`)
-- `GET /foods` - Search food items with filters
+### Consumer
+Requires CONSUMER role.
 
-#### Browse (`/api/restaurants`)
-- `GET /browse` - Browse nearby restaurants
+- POST /api/orders - Place new order
+- GET /api/orders - Get order history
+- GET /api/orders/{orderId} - Get order details
+- GET /api/suggestions - Get personalized suggestions
 
-#### Suggestions (`/api/suggestions`)
-- `GET /` - Get personalized food suggestions
+Below are public
+- GET /api/restaurants - Browse restaurants
+- GET /api/restaurants/nearby - Browse nearby restaurants
+- GET /api/search/foods - Search food items
+- GET /api/restaurant-owners/restaurants/{restaurantId} - View specific restaurant details
+- GET /api/restaurant-owners/restaurants/{restaurantId}/menu-items - List menu items
+- GET /api/restaurant-owners/restaurants/{restaurantId}/timings - View restaurant timings
 
-## Security
 
-### JWT Token
-- Token expiration: 1 hour
-- Token format: `Bearer <token>`
-- Include in Authorization header
 
-## Database Schema
-
-### Tables
-- `users` - User accounts
-- `restaurant` - Restaurant information
-- `menu_item` - Menu items
-- `orders` - Customer orders
-- `order_item` - Order items
-- `restaurant_timing` - Restaurant operating hours

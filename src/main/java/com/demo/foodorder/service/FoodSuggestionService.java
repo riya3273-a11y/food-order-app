@@ -1,7 +1,6 @@
 package com.demo.foodorder.service;
 
-import com.demo.foodorder.dto.search.FoodSearchResponse;
-import org.springframework.transaction.annotation.Transactional;
+import com.demo.foodorder.dto.response.FoodSearchResponse;
 
 import java.util.List;
 

@@ -1,11 +1,18 @@
 package com.demo.foodorder.service.impl;
 
-import com.demo.foodorder.dto.search.FoodSearchResponse;
+import com.demo.foodorder.dto.response.FoodSearchResponse;
+import com.demo.foodorder.dto.response.PagedFoodSearchResponse;
 import com.demo.foodorder.enums.CuisineType;
 import com.demo.foodorder.enums.FoodCategory;
+import com.demo.foodorder.mapper.FoodSearchMapper;
 import com.demo.foodorder.repository.MenuItemRepository;
-import com.demo.foodorder.repository.RestaurantTimingRepository;
+import com.demo.foodorder.service.FoodSearchService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +24,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FoodSearchServiceImpl implements com.demo.foodorder.service.FoodSearchService {
+public class FoodSearchServiceImpl implements FoodSearchService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FoodSearchServiceImpl.class);
     private final MenuItemRepository menuItemRepository;
-    private final RestaurantTimingRepository timingRepository;
 
     @Transactional(readOnly = true)
     @Override
-    public List<FoodSearchResponse> searchFoods(
+    public PagedFoodSearchResponse searchFoods(
             String q,
             FoodCategory category,
             CuisineType cuisine,
@@ -33,45 +40,52 @@ public class FoodSearchServiceImpl implements com.demo.foodorder.service.FoodSea
             Boolean glutenFree,
             BigDecimal minPrice,
             BigDecimal maxPrice,
-            Boolean openNow) {
+            Boolean openNow,
+            int pageNumber,
+            int pageSize) {
 
-        DayOfWeek today =
-                DayOfWeek.valueOf(LocalDate.now().getDayOfWeek().name());
-        LocalTime now = LocalTime.now();
+        if (pageNumber < 0) pageNumber = 0;
+        if (pageSize < 1) pageSize = 10;
+        if (pageSize > 100) pageSize = 100;
 
-        return menuItemRepository.searchFoods(
-                        q, category, cuisine,
-                        vegetarian, vegan, glutenFree,
-                        minPrice, maxPrice
-                )
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<com.demo.foodorder.entity.MenuItem> menuItemPage;
+
+        if (openNow != null && openNow) {
+            DayOfWeek today = DayOfWeek.valueOf(LocalDate.now().getDayOfWeek().name());
+            LocalTime now = LocalTime.now();
+
+            menuItemPage = menuItemRepository.searchFoodsWithOpenNow(
+                    q, category, cuisine,
+                    vegetarian, vegan, glutenFree,
+                    minPrice, maxPrice,
+                    today, now,
+                    pageable
+            );
+        } else {
+            menuItemPage = menuItemRepository.searchFoods(
+                    q, category, cuisine,
+                    vegetarian, vegan, glutenFree,
+                    minPrice, maxPrice,
+                    pageable
+            );
+        }
+
+        List<FoodSearchResponse> content = menuItemPage.getContent()
                 .stream()
-                .filter(m -> {
-                    if (openNow == null || !openNow) return true;
-                    return timingRepository
-                            .findByRestaurantIdAndDayOfWeek(
-                                    m.getRestaurant().getId(), today
-                            )
-                            .map(t ->
-                                    !now.isBefore(t.getOpenTime()) &&
-                                            !now.isAfter(t.getCloseTime())
-                            )
-                            .orElse(false);
-                })
-                .map(m -> FoodSearchResponse.builder()
-                        .menuItemId(m.getId())
-                        .menuItemName(m.getName())
-                        .description(m.getDescription())
-                        .price(m.getPrice())
-                        .category(m.getFoodCategory())
-                        .cuisine(m.getCuisineType())
-                        .vegetarian(m.getVegetarian())
-                        .vegan(m.getVegan())
-                        .glutenFree(m.getGlutenFree())
-                        .restaurantId(m.getRestaurant().getId())
-                        .restaurantName(m.getRestaurant().getName())
-                        .build()
-                )
+                .map(FoodSearchMapper::toResponse)
                 .toList();
+
+        return PagedFoodSearchResponse.builder()
+                .content(content)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .totalElements(menuItemPage.getTotalElements())
+                .totalPages(menuItemPage.getTotalPages())
+                .hasNext(menuItemPage.hasNext())
+                .hasPrevious(menuItemPage.hasPrevious())
+                .build();
     }
 }
 

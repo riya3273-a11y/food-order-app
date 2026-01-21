@@ -17,10 +17,9 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Food Order API",
                 version = "1.0",
-                description = "REST API for Food Order Application with JWT Authentication",
+                description = "Food Order Application",
                 contact = @Contact(
-                        name = "Food Order App",
-                        email = "support@foodorder.com"
+                        name = "Food Order App"
                 )
         )
 )
@@ -30,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER,
-        description = "Enter JWT token (without 'Bearer ' prefix)"
+        description = "Enter JWT token"
 )
 public class OpenApiConfig {
 
@@ -41,7 +40,7 @@ public class OpenApiConfig {
                 .info(new io.swagger.v3.oas.models.info.Info()
                         .title("Food Order API")
                         .version("1.0")
-                        .description("REST API for Food Order Application with JWT Authentication")
+                        .description("Food Order Application")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
 }

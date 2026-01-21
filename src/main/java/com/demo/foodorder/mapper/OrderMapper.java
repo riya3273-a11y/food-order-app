@@ -1,7 +1,7 @@
 package com.demo.foodorder.mapper;
 
-import com.demo.foodorder.dto.order.OrderItemResponse;
-import com.demo.foodorder.dto.order.OrderResponse;
+import com.demo.foodorder.dto.response.OrderItemResponse;
+import com.demo.foodorder.dto.response.OrderResponse;
 import com.demo.foodorder.entity.Order;
 
 import java.util.stream.Collectors;

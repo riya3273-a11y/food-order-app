@@ -16,9 +16,9 @@ public class AuthUserDetailsProvider implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsernameAndActiveTrue(username)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+                        new UsernameNotFoundException("User not found or account inactive"));
 
         return new UserPrincipal(user);
     }

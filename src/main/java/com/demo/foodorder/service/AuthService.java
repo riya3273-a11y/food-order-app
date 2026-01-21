@@ -1,9 +1,9 @@
 package com.demo.foodorder.service;
 
-import com.demo.foodorder.dto.auth.LoginResponse;
-import com.demo.foodorder.dto.auth.RegisterResponse;
-import com.demo.foodorder.dto.auth.LoginRequest;
-import com.demo.foodorder.dto.auth.RegisterRequest;
+import com.demo.foodorder.dto.response.LoginResponse;
+import com.demo.foodorder.dto.response.RegisterResponse;
+import com.demo.foodorder.dto.request.LoginRequest;
+import com.demo.foodorder.dto.request.RegisterRequest;
 
 public interface AuthService {
     RegisterResponse register(RegisterRequest request);

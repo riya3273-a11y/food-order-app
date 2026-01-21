@@ -14,9 +14,12 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     List<Restaurant> findByOwnerId(Long ownerId);
 
+    List<Restaurant> findByOwnerIdAndActiveTrue(Long ownerId);
+
     boolean existsByNameIgnoreCaseAndLatitudeAndLongitude(String name, Double latitude, Double longitude);
 
     long countByOwnerIdAndActiveTrue(Long id);
 
     Optional<Restaurant> findByIdAndOwnerIdAndActiveTrue(Long restaurantId, Long ownerId);
+
 }
